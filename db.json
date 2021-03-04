@@ -71,6 +71,42 @@
           "name": "Mary Gordon"
         }
       ]
+    },
+    {
+      "id": 834,
+      "user": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "category": "nature",
+      "organizer": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "title": "Test_Nature",
+      "description": "Let's get wild and test out some weird outdoor stuff",
+      "location": "Big Sky Resort",
+      "date": "2021-12-10T20:06:00.000Z",
+      "time": "12:00",
+      "attendees": []
+    },
+    {
+      "id": 953,
+      "user": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "category": "animal welfare",
+      "organizer": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "title": "help animals",
+      "description": "do things",
+      "location": "City Park",
+      "date": "2021-03-10T21:13:00.000Z",
+      "time": "10:00",
+      "attendees": []
     }
   ]
 }

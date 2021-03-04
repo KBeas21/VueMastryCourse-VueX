@@ -15,5 +15,9 @@ export default {
   },
   getEvent(id) {
     return apiClient.get('/events/' + id)
+  },
+  postEvent(event) {
+    // adds to our mock Database
+    return apiClient.post('/events', event)
   }
 }

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import EventServices from '@/services/EventService.js'
 
 Vue.use(Vuex)
 
@@ -21,35 +22,32 @@ export default new Vuex.Store({
       { id: 3, text: "Kill Kuzco, with Kuzco's poison", done: false },
       { id: 4, text: '...', done: false }
     ],
-    events: [
-      // this is not used
-      { id: 1, title: '...', organizer: '...' },
-      { id: 2, title: '...', organizer: '...' },
-      { id: 3, title: '...', organizer: '...' },
-      { id: 4, title: '...', organizer: '...' }
-    ]
+    events: []
   },
-  mutations: {},
-  actions: {},
-  // here is (7) and (8).
+  mutations: {
+    ADD_EVENT(state, event) {
+      state.events.push(event)
+    }
+  },
+  actions: {
+    createEvent({ commit }, event) {
+      /*
+      // Adds to the mock DB db.json
+      EventServices.postEvent(event)
+      // commits the 'ADD_EVENT' mutation
+      commit('ADD_EVENT', event)
+      */
+
+      // To make sure we successfully add it to our DB before we clear the data we need to add a promise then
+      // we wait for the response to return in our 'Dispatcher' (where we dispatch our event inside of our component)
+      return EventServices.postEvent(event).then(() => {
+        commit('ADD_EVENT', event)
+      })
+    }
+  },
   getters: {
-    catLength: state => state.categories.length,
-    doneTodos: state => {
-      // (7)
-      return state.todos.filter(todo => todo.done)
-    },
-    activeTodosCount: (state /* (8) getters */) => {
-      // (8) shows us we can pass in other getters to be used inside of themselves
-      // return state.todos.length - getters.doneTodos.length
-      // (9) - just a better way to do (8) =)
-      return state.todos.filter(todo => !todo.done).length
-    },
-    // (10) Dynamic getter - passing an argument to it
-    getTodoById: state => id => {
-      return state.todos.find(todo => todo.id === id)
-    },
-    getTodos: state => {
-      return state.todos
+    getEventById: state => id => {
+      return state.events.find(event => event.id === id)
     }
   }
 })
