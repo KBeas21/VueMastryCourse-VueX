@@ -1,113 +1,131 @@
 <template>
-<!--
-  This document will so us how to use basic state and getters:
-    * (1) - (6) are basic state usage
-    * (7) - (10) getters will take you back to the store where the state is being held
-    * (11) mapGetters, just like we use mapState in (3) we can do the samething for getters
--->
+    <div>
+      <h1>Create Event {{ user.name }} / {{ user.id }} </h1>
+      <!--
+        @submit (when form is submitted) '.prevent' (prevents the default behavior of the form)
+          Below calls the below method that commits the action
+      -->
+      <form @submit.prevent="createEvent">
+        <label>Select a category</label>
+        <select v-model="event.category">
+          <option v-for="cat in categories" :key="cat">{{ cat }}</option>
+        </select>
 
-  <!-- (1) - just pulling from store 
-    <h1>Create Event {{ $store.state.user.name }}</h1> this does the same thing as below BUT the COMPUTED VALUE is better for reuseibility.
-  -->
-  <!-- (2) use computed to pull from store
-    <div>
-      <h1>Create Event {{ userName }}</h1>
-      <p>This event was created by {{ userName }}</p>
-    </div>
-  -->
-  <!-- (3) 
-    <div>
-    <h1>Create Event {{ userName }}</h1>
-    <p>This event was created by {{ userName }} - {{ userID }}</p>
-  </div>
-  -->
-  <!-- (4) and (5) -->
-    <div>
-    <h1>Create Event {{ user.name }}</h1>
-    <p>This event was created by {{ user.name }} - {{ user.id }}</p>
-    <p>There are {{ catLength }} categories</p>
-    <ul>
-      <li v-for="cat in categories" :key="cat">{{ cat }}</li> <!-- (8) & (9) -->
-    </ul>
-    <p><b>Get all todos:</b></p> 
-    <p>{{ getTodos }}</p>
-    <p><b>Get done todos:</b></p> <!-- (7) -->
-    <p>{{ getDoneTodos }}</p>
-    <!-- <p>{{ doneTodos }}</p> See (11) comment below -->
-    <p><b>Get 1 todo with id -- dynamic:</b></p> <!-- (10) -->
-    <p>{{ getTodo(1) }}</p>
-    <!-- <p>{{ getTodoById(1) }}</p> (11) would change this to the getter in state, getTodoById() over getTodo(1) -->
+        <h3>Name & describe your event</h3>
+        <div class="field">
+          <label>Title</label>
+          <input v-model="event.title" type="text" placeholder="Add an event title"/>
+        </div>
+
+        <div class="field">
+          <label>Description</label>
+          <input v-model="event.description" type="text" placeholder="Add a description"/>
+        </div>
+
+        <h3>Where is your event?</h3>
+        <div class="field">
+          <label>Location</label>
+          <input v-model="event.location" type="text" placeholder="Add a location"/>
+        </div>
+
+        <h3>When is your event?</h3>
+        <div class="field">
+          <label>Date</label>
+          <datepicker v-model="event.date" placeholder="Select a date"/>
+        </div>
+
+        <div class="field">
+          <label>Select a time</label>
+          <select v-model="event.time">
+            <option v-for="time in times" :key="time">{{ time }}</option>
+          </select>
+        </div>
+
+        <input type="submit" class="button -fill-gradient" value="Submit"/>
+    </form>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'; // This allows us to mapState/mapGetters to computed properties
+import { mapState } from 'vuex';
+import Datepicker from 'vuejs-datepicker';
 
 export default {
-  // (2) below is not using MapState 
-  // computed: {
-  //   userName() {
-  //     return this.$store.state.user.name;
-  //   },
-  //   userID() {
-  //     return this.$store.state.user.id;
-  //   }
-  // },
-
-  // (3) below is using mapState with functions but we can do it a little more simplistically (see (4)) 
-  // computed: mapState({
-  //   userName: state => state.user.name,
-  //   userID: state => state.user.id,
-  //   categories: state => state.categories
-  // }),
-
-  // (4) below is a simplier state pulling from strings
-  // computed: mapState({
-  //   user: 'user',
-  //   categories: 'categories'
-  // }),
-
-  // (5) 
-  // computed: mapState([ 'user', 'categories']),
-
-  // NOTE: Computed properties are only for transforming data for our presentation layer.
-  // It shouldn't change the data given in any way. If it changes the data it will more than
-  // likely result in headaches and bugs later
-  // NOTE 2: When determining when to use a computed property or method think about it like:
-  // When you need to change data you will use *methods*. 
-  // When you need to change the presentation of EXISTING DATA you will use computed properties.
-  /*
-    Additional INFO:
-      The difference between a computed property and a method is that computed properties are cached and
-      change only when their dependencies change. A method will evaluate every time it's called.
-  */
+  components: {
+    Datepicker
+  },
   computed: {
-    // (6) if we wanted to have localComputed properties with mapState we would use the spread oprator and it would look like:
-    someLocalComputed() {
-      return this.someLocalComputed;
+    ...mapState(['user'])
+  },
+  data() {
+    const times = [];
+    for (let i = 1; i <= 24; i++) {
+      times.push(i + ':00');
+    }
+
+    return {
+      times,
+      categories: this.$store.state.categories,
+      event: this.createFreshEventObject()
+    }
+  },
+  methods: {
+    createEvent() {
+      /* 
+      // This calls our action createEvent inside of the store 
+      this.$store.dispatch('createEvent', this.event);
+
+      // The above doesn't clear our form to clear our form we can do the below, thought we want 
+      // to make sure that we successfully added it do the DB before we clear so we go to the store
+      this.event = this.createFreshEventObject()
+      */
+     this.$store.dispatch('createEvent', this.event)
+       .then(() => {
+       // Once we have successfully created an event, we can redirect the user to that view by using
+       // Vue router's method push method. (https://router.vuejs.org/guide/essentials/navigation.html#router-push-location-oncomplete-onabort)
+        this.$router.push({
+          name: 'event-show',
+          params: { id: this.event.id } // see @/router.js file for path we are hitting
+        });
+        // NOTE: we have to clear it afterwards so that we can use the event.id for the router
+        this.event = this.createFreshEventObject();
+        })
+        .catch(() => {
+          // error handling. Normally we would set an error state here and show some error component or banner for this
+          console.log('there was a problem creating your event')
+        });
     },
-    catLength() {
-      // return this.$store.state.categories.length
-      // this would work but if we wanted to use this in multiple components we would have a lot of duplicate code -- INSERT GETTERS!!! (7)
-      return this.$store.getters.catLength
-    },
-    getTodo() {
-      return this.$store.getters.getTodoById
-    },
-    getTodos() {
-      return this.$store.getters.getTodos
-    },
-    getDoneTodos() {
-      return this.$store.getters.doneTodos
-    },
-    // (11) We can take all the above and use mapGetters like we do mapState
-    //       NOTE: this maps to the getters name not the computed functions name
-    // ...mapGetters(['catLength','getTodoById','getTodos','doneTodos']),
-    ...mapState(['user', 'categories'])
+    createFreshEventObject() {
+      const user = this.$store.state.user;
+      const id = Math.floor(Math.random() * 1000)
+
+      /*
+      You might be wondering why we have this method. Why not just have all these properties on our data itself?
+      Well, when we submit an event, we want to reset this component’s event data, and this method is a handy way
+      for us to do that. You’ll see us using it later.
+      
+      If we did not reset our local event object, we could be retaining unnecessary connections between this
+      object and the one we push into our State.
+      */
+      return {
+        id: id,
+        user: user,
+        category: '',
+        organizer: user,
+        title: '',
+        description: '',
+        location: '',
+        date: '',
+        time: '',
+        attendees: []
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-
+.field {
+  margin-bottom: 4rem;
+}
 </style>
