@@ -73,7 +73,39 @@
       ]
     },
     {
-      "id": 834,
+      "id": 4,
+      "title": "Vuex Party day",
+      "date": "March 8 2021",
+      "time": "12:00",
+      "location": "5440 110th Street, Overland Park, KS 66211",
+      "description": "Learning Vuex party.",
+      "organizer": "Kevin Beashore",
+      "category": "education",
+      "attendees": [
+        {
+          "id": "vj123",
+          "name": "Vanessa Jewell"
+        },
+        {
+          "id": "mg456",
+          "name": "MaryGrace Blair"
+        },
+        {
+          "id": "cj789",
+          "name": "Cj Meeks"
+        },
+        {
+          "id": "ib147",
+          "name": "Ibrahim Butt"
+        },
+        {
+          "id": "wc852",
+          "name": "Will Coates"
+        }
+      ]
+    },
+    {
+      "id": 5,
       "user": {
         "id": "KB123",
         "name": "Kevin B"
@@ -91,7 +123,7 @@
       "attendees": []
     },
     {
-      "id": 953,
+      "id": 6,
       "user": {
         "id": "KB123",
         "name": "Kevin B"
