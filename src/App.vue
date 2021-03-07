@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <NavBar />
-
-    <router-view />
+    <!-- The key is telling Vue Router to reload when the URL changes, including query params -->
+    <router-view :key="$route.fullPath" />
   </div>
 </template>
 

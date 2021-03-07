@@ -25,23 +25,27 @@
   </div>
 </template>
 <script>
-import EventService from '@/services/EventService.js'
+import { mapState } from 'vuex'
 
 export default {
-  props: ['id'], // From where did EventShow get the id prop it uses when it makes the getEvent API call? It took it from the URL params. So if our URL was /event/1, EventShow’s id prop would be 1. (you can see how this is done in router.js)
-  data() {
-    return {
-      event: {}
-    }
-  },
+  // From where did EventShow get the id prop it uses when it makes the getEvent API call?
+  // It took it from the URL params. So if our URL was /event/1, EventShow’s id prop would
+  // be 1. (you can see how this is done in router.js)
+  props: ['id'],
   created() {
-    EventService.getEvent(this.id)
-      .then(response => {
-        this.event = response.data
-      })
-      .catch(error => {
-        console.log('There was an error:', error.response)
-      })
+    // No Vuex
+    // EventService.getEvent(this.id)
+    //   .then(response => {
+    //     this.event = response.data
+    //   })
+    //   .catch(error => {
+    //     console.log('There was an error:', error.response)
+    //   })
+    // With Vuex
+    this.$store.dispatch('fetchEvent', this.id);
+  },
+  computed: {
+    ...mapState(['event'])
   }
 }
 </script>
