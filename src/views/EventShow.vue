@@ -25,16 +25,29 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   props: ['id'],
   created() {
-    this.$store.dispatch('fetchEvent', this.id);
+    // using namespacing you have to dipatch 'module/action'
+    // this.$store.dispatch('eventMod/fetchEvent', this.id);
+    
+    // using the mapActions helper it would look like:
+    this.fetchEvent(this.id)
   },
   computed: {
-    ...mapState(['event'])
-  }
+    /**
+     * An other way to update everything instead of having `eventMod.event` or `eventMod.events`
+     * is to map the word event to `eventMod.event`
+     * 
+     * This way we don't have to update all the dot calls
+     */
+    ...mapState({
+      event: state => state.eventMod.event
+    }),
+  },
+  methods: mapActions('eventMod', ['fetchEvent']) // could also be mapActions([eventMod/fetchEvent])
 }
 </script>
 <style scoped>

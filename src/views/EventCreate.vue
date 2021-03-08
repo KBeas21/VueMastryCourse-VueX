@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1>Create Event {{ user.name }} / {{ user.id }} </h1>
+      <h1>Create Event {{ userMod.user.name }} / {{ userMod.user.id }} </h1>
 
       <form @submit.prevent="createEvent">
         <label>Select a category</label>
@@ -52,7 +52,7 @@ export default {
     Datepicker
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(['userMod']) // pulling information from module now
   },
   data() {
     const times = [];
@@ -68,7 +68,8 @@ export default {
   },
   methods: {
     createEvent() {
-     this.$store.dispatch('createEvent', this.event)
+      // using namespacing you have to dipatch 'module/action'
+     this.$store.dispatch('eventMod/createEvent', this.event)
        .then(() => {
         this.$router.push({
           name: 'event-show',
@@ -81,7 +82,7 @@ export default {
         });
     },
     createFreshEventObject() {
-      const user = this.$store.state.user;
+      const user = this.$store.state.userMod.user; // userMod -> module name | user -> state
       const id = Math.floor(Math.random() * 1000)
 
       return {

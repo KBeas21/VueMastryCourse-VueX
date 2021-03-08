@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Events Listing</h1>
-    <EventCard v-for="event in events" :key="event.id" :event="event"/>
+    <h1>Events Listing for {{ userMod.user.name }}</h1> <!-- userMod -> module name | user -> state -->
+    <EventCard v-for="event in eventMod.events" :key="event.id" :event="event"/>
     
     <template v-if="page != 1">
       <router-link :to="{ name: 'event-list', query: { page: page - 1 } }" rel="prev">
@@ -24,7 +24,8 @@ export default {
     EventCard
   },
   created() {
-    this.$store.dispatch('fetchEvents', {
+    // using namespacing you have to dipatch 'module/action'
+    this.$store.dispatch('eventMod/fetchEvents', {
       perPage: 3, // <-- how many items per page
       page: this.page // <-- what page we're on -- see computed page()
     });
@@ -34,9 +35,15 @@ export default {
       return parseInt(this.$route.query.page) || 1;
     },
     hasNextPage() {
-      return this.eventsTotal > this.page * this.page
+      return this.eventMod.eventsTotal > this.page * this.page
     },
-    ...mapState(['events', 'eventsTotal'])
+    // Downside HERE, events, eventsTotal, & userMod are all in global state
+    // but how do we tell them apart?? We don't :) so userMod.....hints the name
+    ...mapState(['eventMod', 'eventsTotal', 'userMod'])
+    /*
+    `$store.state.event` is refering to the module name so it looks like:
+        $store.state.eventMod = { events: [], eventsTotal: 0 }
+    */
   },
 }
 </script>
