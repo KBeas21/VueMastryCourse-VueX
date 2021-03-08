@@ -139,6 +139,42 @@
       "date": "2021-03-10T21:13:00.000Z",
       "time": "10:00",
       "attendees": []
+    },
+    {
+      "id": 535,
+      "user": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "category": "housing",
+      "organizer": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "title": "Building a house",
+      "description": "lets build a house",
+      "location": "",
+      "date": "",
+      "time": "",
+      "attendees": []
+    },
+    {
+      "id": 488,
+      "user": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "category": "nature",
+      "organizer": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "title": "Plant trees",
+      "description": "planting tress and stuff",
+      "location": "the park",
+      "date": "2021-03-13T23:04:00.000Z",
+      "time": "11:00",
+      "attendees": []
     }
   ]
 }

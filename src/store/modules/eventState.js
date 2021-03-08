@@ -27,12 +27,42 @@ export const mutations = {
 }
 
 export const actions = {
-  createEvent({ commit }, event) {
-    return EventServices.postEvent(event).then(() => {
-      commit('ADD_EVENT', event)
-    })
+  /**
+   * Creates an event
+   *
+   * We are not putting in the object parameters because when you use
+   * this you are not passing them in instead you are pulling in:
+   *   `commit` - to call a mutation
+   *   `dispatch` - to call an action
+   *
+   * @param {*} event - event to create
+   * @throws {Error} if the event fails to be created
+   */
+  createEvent({ commit, dispatch }, event) {
+    return EventServices.postEvent(event)
+      .then(() => {
+        commit('ADD_EVENT', event)
+        const notification = {
+          type: 'success',
+          message: 'Your event has been created!'
+        }
+        dispatch('notifications/add', notification, { root: true })
+      })
+      .catch(error => {
+        const notification = {
+          type: 'error',
+          message: 'There is a problem creating your event: ' + error.message
+        }
+        dispatch('notifications/add', notification, { root: true })
+        /*
+          We are throwing the error we just catch here because we need to send it
+          up to our component, EventCreate.vue because there is a different behavior
+          if the error happens in our component
+          */
+        throw error
+      })
   },
-  fetchEvents({ commit }, { perPage, page }) {
+  fetchEvents({ commit, dispatch }, { perPage, page }) {
     if (perPage && page) {
       EventServices.getEvents(perPage, page)
         .then(response => {
@@ -43,7 +73,12 @@ export const actions = {
           commit('SET_EVENTS', response.data)
         })
         .catch(error => {
-          console.log('There was an error:', error.response)
+          const notification = {
+            type: 'error',
+            message: 'There is a problem fetching events: ' + error.message
+          }
+          dispatch('notifications/add', notification, { root: true })
+          // dispatch('Module / action', payload, { root: true }) root is 'rootState'
         })
     } else {
       EventServices.getEvents()
@@ -55,7 +90,7 @@ export const actions = {
         })
     }
   },
-  fetchEvent({ commit, getters }, id) {
+  fetchEvent({ commit, getters, dispatch }, id) {
     let event = getters.getEventById(id)
 
     if (event) {
@@ -66,7 +101,12 @@ export const actions = {
           commit('SET_EVENT', response.data)
         })
         .catch(error => {
-          console.log('There was an error', error.response)
+          const notification = {
+            type: 'error',
+            message: 'There is a problem fetching event: ' + error.message
+          }
+          dispatch('notifications/add', notification, { root: true })
+          // console.log('There was an error', error.response)
         })
     }
   }

@@ -78,7 +78,12 @@ export default {
         this.event = this.createFreshEventObject();
         })
         .catch(() => {
-          console.log('there was a problem creating your event')
+          /*
+            Here is where we catch the thrown error in eventState.js because we dispatch the action on line 72.
+            If we wanted to handle this more gracfully (other than ignoring it) we could render a banner or
+            something to indicate "Your event was not created, please try again".... 
+          */
+          {}
         });
     },
     createFreshEventObject() {
