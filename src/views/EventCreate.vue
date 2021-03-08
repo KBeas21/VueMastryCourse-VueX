@@ -1,10 +1,7 @@
 <template>
     <div>
       <h1>Create Event {{ user.name }} / {{ user.id }} </h1>
-      <!--
-        @submit (when form is submitted) '.prevent' (prevents the default behavior of the form)
-          Below calls the below method that commits the action
-      -->
+
       <form @submit.prevent="createEvent">
         <label>Select a category</label>
         <select v-model="event.category">
@@ -71,27 +68,15 @@ export default {
   },
   methods: {
     createEvent() {
-      /* 
-      // This calls our action createEvent inside of the store 
-      this.$store.dispatch('createEvent', this.event);
-
-      // The above doesn't clear our form to clear our form we can do the below, thought we want 
-      // to make sure that we successfully added it do the DB before we clear so we go to the store
-      this.event = this.createFreshEventObject()
-      */
      this.$store.dispatch('createEvent', this.event)
        .then(() => {
-       // Once we have successfully created an event, we can redirect the user to that view by using
-       // Vue router's method push method. (https://router.vuejs.org/guide/essentials/navigation.html#router-push-location-oncomplete-onabort)
         this.$router.push({
           name: 'event-show',
-          params: { id: this.event.id } // see @/router.js file for path we are hitting
+          params: { id: this.event.id }
         });
-        // NOTE: we have to clear it afterwards so that we can use the event.id for the router
         this.event = this.createFreshEventObject();
         })
         .catch(() => {
-          // error handling. Normally we would set an error state here and show some error component or banner for this
           console.log('there was a problem creating your event')
         });
     },
@@ -99,14 +84,6 @@ export default {
       const user = this.$store.state.user;
       const id = Math.floor(Math.random() * 1000)
 
-      /*
-      You might be wondering why we have this method. Why not just have all these properties on our data itself?
-      Well, when we submit an event, we want to reset this component’s event data, and this method is a handy way
-      for us to do that. You’ll see us using it later.
-      
-      If we did not reset our local event object, we could be retaining unnecessary connections between this
-      object and the one we push into our State.
-      */
       return {
         id: id,
         user: user,

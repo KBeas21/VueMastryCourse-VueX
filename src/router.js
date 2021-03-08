@@ -18,7 +18,7 @@ export default new Router({
       path: '/event/:id',
       name: 'event-show',
       component: EventShow,
-      props: true // From where did EventShow get the id prop it uses when it makes the getEvent API call? It took it from the URL params. So if our URL was /event/1, EventShow’s id prop would be 1.
+      props: true
     },
     {
       path: '/event/create',

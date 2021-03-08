@@ -1,9 +1,4 @@
 <template>
-<!--
-  This (router-link) allows us to click on the EventCard and have us routed to: '/event/:id``',
-  where id is the event.id from the EventCard we just clicked on. For example: '/event/1``'.
-  This routes us to the EventShow component, which pulls the id of the event to show from the URL.
--->
   <router-link class="event-link" :to="{ name: 'event-show', params: { id: event.id } }">
     <div class="event-card -shadow">
       <span class="eyebrow">@{{ event.time }} on {{ event.date }}</span>
