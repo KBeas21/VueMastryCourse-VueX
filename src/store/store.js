@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 // Imports all public items (things that are exported) into the provide namespace
 import * as userMod from '@/store/modules/userState.js'
 import * as eventMod from '@/store/modules/eventState.js'
-import * as notifications from '@/store/modules/notifications.js'
+import * as notification from '@/store/modules/notification.js'
 
 Vue.use(Vuex)
 
@@ -11,7 +11,7 @@ export default new Vuex.Store({
   modules: {
     userMod,
     eventMod,
-    notifications
+    notification
   },
   state: {
     // avalible categories to create an event with

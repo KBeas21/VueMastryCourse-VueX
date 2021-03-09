@@ -46,14 +46,14 @@ export const actions = {
           type: 'success',
           message: 'Your event has been created!'
         }
-        dispatch('notifications/add', notification, { root: true })
+        dispatch('notification/add', notification, { root: true })
       })
       .catch(error => {
         const notification = {
           type: 'error',
           message: 'There is a problem creating your event: ' + error.message
         }
-        dispatch('notifications/add', notification, { root: true })
+        dispatch('notification/add', notification, { root: true })
         /*
           We are throwing the error we just catch here because we need to send it
           up to our component, EventCreate.vue because there is a different behavior
@@ -77,7 +77,7 @@ export const actions = {
             type: 'error',
             message: 'There is a problem fetching events: ' + error.message
           }
-          dispatch('notifications/add', notification, { root: true })
+          dispatch('notification/add', notification, { root: true })
           // dispatch('Module / action', payload, { root: true }) root is 'rootState'
         })
     } else {
@@ -105,7 +105,7 @@ export const actions = {
             type: 'error',
             message: 'There is a problem fetching event: ' + error.message
           }
-          dispatch('notifications/add', notification, { root: true })
+          dispatch('notification/add', notification, { root: true })
           // console.log('There was an error', error.response)
         })
     }

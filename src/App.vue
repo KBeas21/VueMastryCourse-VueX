@@ -1,17 +1,21 @@
 <template>
   <div id="app">
     <NavBar/>
+    <!-- Now that is is on the top most component we can see notifications throughout the app -->
+    <NotificationContainer />
     <router-view :key="$route.fullPath" />
   </div>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar.vue'
+import NotificationContainer from '@/components/notifications/NotificationContainer.vue';
 
 export default {
   components: {
-    NavBar
-  }
+    NavBar,
+    NotificationContainer
+  },
 }
 </script>
 

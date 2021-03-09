@@ -175,6 +175,42 @@
       "date": "2021-03-13T23:04:00.000Z",
       "time": "11:00",
       "attendees": []
+    },
+    {
+      "id": 699,
+      "user": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "category": "animal welfare",
+      "organizer": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "title": "My event Title",
+      "description": "some description",
+      "location": "some location",
+      "date": "2021-03-11T01:09:00.000Z",
+      "time": "10:00",
+      "attendees": []
+    },
+    {
+      "id": 159,
+      "user": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "category": "animal welfare",
+      "organizer": {
+        "id": "KB123",
+        "name": "Kevin B"
+      },
+      "title": "Help the animals!",
+      "description": "remove fish from nets",
+      "location": "the river",
+      "date": "2021-03-19T02:45:00.000Z",
+      "time": "11:00",
+      "attendees": []
     }
   ]
 }
